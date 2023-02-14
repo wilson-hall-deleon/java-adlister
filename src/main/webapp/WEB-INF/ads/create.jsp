@@ -13,13 +13,13 @@
         <form action="/ads/create" method="post">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input id="title" name="title" class="form-control" type="text" value="${title}">
-                <span>${missingTitle}</span>
+                <input ${missingTitle != null ? 'style="border: 1px solid red;"' : ''} id="title" name="title" class="form-control" type="text" value="${title}">
+                <span ${missingTitle != null ? 'style="color: red;"' : ''}>${missingTitle}</span>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control" type="text">${description}</textarea>
-                <span>${missingDescription}</span>
+                <textarea ${missingDescription != null ? 'style="border: 1px solid red;"' : ''} id="description" name="description" class="form-control" type="text">${description}</textarea>
+                <span ${missingDescription != null ? 'style="color: red;"' : ''}>${missingDescription}</span>
             </div>
             <input type="submit" class="btn btn-block btn-primary">
         </form>

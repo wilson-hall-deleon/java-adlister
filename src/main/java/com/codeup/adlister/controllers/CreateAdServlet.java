@@ -9,22 +9,29 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
     private boolean validateInput(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         boolean isValid = true;
         String title = request.getParameter("title");
         String description = request.getParameter("description");
 
         if (title.isEmpty()) {
-            request.getSession().setAttribute("missingTitle", "Title required");
+            session.setAttribute("missingTitle", "Title required");
             isValid = false;
+        } else {
+            session.removeAttribute("missingTitle");
         }
+
         if (description.isEmpty()) {
-            request.getSession().setAttribute("missingDescription", "Description required");
+            session.setAttribute("missingDescription", "Description required");
             isValid = false;
+        } else {
+            session.removeAttribute("missingDescription");
         }
         return isValid;
     }
@@ -38,15 +45,19 @@ public class CreateAdServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        User user = (User) request.getSession().getAttribute("user");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         boolean isValid = validateInput(request);
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        request.getSession().setAttribute("title", title);
-        request.getSession().setAttribute("description", description);
+        session.setAttribute("title", title);
+        session.setAttribute("description", description);
+
         if (isValid) {
-            request.getSession().removeAttribute("missingTitle");
-            request.getSession().removeAttribute("missingDescription");
+            session.removeAttribute("missingTitle");
+            session.removeAttribute("missingDescription");
+            session.removeAttribute("title");
+            session.removeAttribute("description");
             Ad ad = new Ad(
                     user.getId(),
                     request.getParameter("title"),
@@ -57,11 +68,5 @@ public class CreateAdServlet extends HttpServlet {
         } else {
             response.sendRedirect("/ads/create?title=" + title + "&description=" + description);
         }
-
-//
-//        boolean emptyField = title.isEmpty() || description.isEmpty();
-//        if (emptyField) {
-//
-//        }
     }
 }
