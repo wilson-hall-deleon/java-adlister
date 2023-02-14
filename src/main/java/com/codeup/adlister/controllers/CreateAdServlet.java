@@ -13,6 +13,21 @@ import java.io.IOException;
 
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
+    private boolean validateInput(HttpServletRequest request) {
+        boolean isValid = true;
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+
+        if (title.isEmpty()) {
+            request.getSession().setAttribute("missingTitle", "Title required");
+            isValid = false;
+        }
+        if (description.isEmpty()) {
+            request.getSession().setAttribute("missingDescription", "Description required");
+            isValid = false;
+        }
+        return isValid;
+    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/login");
@@ -22,14 +37,31 @@ public class CreateAdServlet extends HttpServlet {
             .forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute("user");
-        Ad ad = new Ad(
-            user.getId(),
-            request.getParameter("title"),
-            request.getParameter("description")
-        );
-        DaoFactory.getAdsDao().insert(ad);
-        response.sendRedirect("/ads");
+        boolean isValid = validateInput(request);
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        request.getSession().setAttribute("title", title);
+        request.getSession().setAttribute("description", description);
+        if (isValid) {
+            request.getSession().removeAttribute("missingTitle");
+            request.getSession().removeAttribute("missingDescription");
+            Ad ad = new Ad(
+                    user.getId(),
+                    request.getParameter("title"),
+                    request.getParameter("description")
+            );
+            DaoFactory.getAdsDao().insert(ad);
+            response.sendRedirect("/ads");
+        } else {
+            response.sendRedirect("/ads/create?title=" + title + "&description=" + description);
+        }
+
+//
+//        boolean emptyField = title.isEmpty() || description.isEmpty();
+//        if (emptyField) {
+//
+//        }
     }
 }
