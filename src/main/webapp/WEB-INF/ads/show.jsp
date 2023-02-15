@@ -8,8 +8,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
-<c:set var="ad" value="${ad}" />
-<c:set var="user" value="${user}" />
 
 <div class="container">
     <div class="col-md-6">
