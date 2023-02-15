@@ -7,6 +7,7 @@
 </head>
 <body>
     <jsp:include page="/WEB-INF/partials/navbar.jsp" />
+    <jsp:include page="/WEB-INF/partials/navbar-conditional.jsp"/>
     <div class="container">
         <h1>Please Log In</h1>
         <form action="/login" method="POST">

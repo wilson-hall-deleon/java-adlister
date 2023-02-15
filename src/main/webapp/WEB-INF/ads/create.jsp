@@ -7,6 +7,9 @@
     </jsp:include>
 </head>
 <body>
+<jsp:include page="/WEB-INF/partials/navbar.jsp" />
+<jsp:include page="/WEB-INF/partials/navbar-conditional.jsp"/>
+
     <div class="container">
         <h1>Create a new Ad</h1>
 
