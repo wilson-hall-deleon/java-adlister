@@ -11,12 +11,12 @@
 
 <div class="container">
     <div class="col-md-6">
-        <h2>${ad.title}</h2>
-        <p>${ad.description}</p>
+        <h2><c:out value="${ad.title}"/></h2>
+        <p><c:out value="${ad.description}"/></p>
     </div>
     <div>
-        <p>Posted by ${user.username}</p>
-        <p>Contact: ${user.email}</p>
+        <p>Posted by <c:out value="${user.username}"/></p>
+        <p>Contact: <c:out value="${user.email}"/></p>
     </div>
 </div>
 </body>
