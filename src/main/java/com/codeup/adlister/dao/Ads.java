@@ -14,4 +14,6 @@ public interface Ads {
     Ad getAdId(long id);
     // insert a new ad and return the new ad's id
     Long insert(Ad ad);
+    boolean updateAd(Ad ad);
+    boolean deleteAd(Long id);
 }
