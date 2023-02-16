@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @WebServlet(name = "controllers.LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
-    private Object User;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
@@ -46,6 +45,5 @@ public class LoginServlet extends HttpServlet {
         } else {
             response.sendRedirect("/login");
         }
-
     }
 }

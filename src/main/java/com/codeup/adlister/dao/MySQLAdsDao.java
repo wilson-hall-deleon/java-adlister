@@ -38,6 +38,18 @@ public class MySQLAdsDao implements Ads {
     }
 
     @Override
+    public List<Ad> allFromUserId(long userId) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads WHERE user_id = ?");
+            stmt.setLong(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving all ads.", e);
+        }
+    }
+
+    @Override
     public List<Ad> searchAds(String query) {
         try {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads WHERE title LIKE ? OR description LIKE ?");
