@@ -26,9 +26,21 @@
                         </a>
                     </h2>
                     <p><c:out value="${ad.description}"/></p>
+                    <form method="post" action="/ads/delete">
+                        <input type="hidden" name="id" value="${ad.id}">
+                        <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+                    </form>
                 </div>
             </c:forEach>
         </c:if>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script>
+        $('.delete-btn').on('click', function() {
+            if (confirm('Are you sure you want to delete this ad?')) {
+                $(this).parent('form').submit();
+            }
+        });
+    </script>
 </body>
 </html>
