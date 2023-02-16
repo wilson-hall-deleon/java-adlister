@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,14 +12,36 @@
     <div class="container">
         <h1>Please Log In</h1>
         <form action="/login" method="POST">
-            <input type="hidden" name="from" value="${param.from}">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" name="username" class="form-control" type="text">
+                <c:choose>
+                    <%--missing username logic--%>
+                    <c:when test="${missingUsername != null}">
+                        <input id="username" name="username" class="form-control" type="text" style="border: 1px solid red">
+                        <span style="color: red" }>${missingUsername}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="username" name="username" class="form-control" type="text">
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" name="password" class="form-control" type="password">
+                <c:choose>
+                    <%--missing password logic--%>
+                    <c:when test="${missingPassword != null}">
+                        <input id="password" name="password" class="form-control" type="password" style="border: 1px solid red">
+                        <span style="color: red" }>${missingPassword}</span>
+                    </c:when>
+                    <%--wrong password logic--%>
+                    <c:when test="${wrongPassword != null}">
+                        <input id="password" name="password" class="form-control" type="password" style="border: 1px solid red">
+                        <span style="color: red" }>${wrongPassword}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="password" name="password" class="form-control" type="password">
+                    </c:otherwise>
+                </c:choose>
             </div>
             <input type="submit" class="btn btn-primary btn-block" value="Log In">
         </form>

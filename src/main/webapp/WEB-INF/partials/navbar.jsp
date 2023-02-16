@@ -21,6 +21,8 @@
         <div id="logged-in" class="navbar-links-logged-in">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
+                <li><a href="/ads">All ads</a></li>
+                <li><a href="/ads/create">Create ad</a></li>
                 <li><a href="/profile">Profile</a></li>
                 <li><a href="/logout">Log out</a></li>
             </ul>
