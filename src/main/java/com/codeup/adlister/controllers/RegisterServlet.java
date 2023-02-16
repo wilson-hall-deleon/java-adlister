@@ -24,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
             session.setAttribute("dupeUsername", "A user already exists by this name.");
             isValid = false;
         } else {
-            session.removeAttribute("duperUsername");
+            session.removeAttribute("dupeUsername");
         }
 
         if (DaoFactory.getUsersDao().findByUsername(username).getEmail().equalsIgnoreCase(email)) {
