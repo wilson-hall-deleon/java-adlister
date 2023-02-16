@@ -1,46 +1,91 @@
 package com.codeup.adlister.controllers;
-
 import com.codeup.adlister.dao.DaoFactory;
 import com.codeup.adlister.models.User;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "controllers.RegisterServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
+
+    private boolean validateRegistry(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        boolean isValid = true;
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String confirmPass = request.getParameter("confirm_password");
+
+        if (DaoFactory.getUsersDao().findByUsername(username).getUsername().equalsIgnoreCase(username)) {
+            session.setAttribute("dupeUsername", "A user already exists by this name.");
+            isValid = false;
+        } else {
+            session.removeAttribute("duperUsername");
+        }
+
+        if (DaoFactory.getUsersDao().findByUsername(username).getEmail().equalsIgnoreCase(email)) {
+            session.setAttribute("dupeEmail", "A user already exists with this email.");
+            isValid = false;
+        } else {
+            session.removeAttribute("dupeEmail");
+        }
+
+        if (username.isEmpty()) {
+            session.setAttribute("missingUsername", "Please fill in your username");
+            isValid = false;
+        } else {
+            session.removeAttribute("missingUsername");
+        }
+        if (email.isEmpty()) {
+            session.setAttribute("missingEmail", "Please fill in your email");
+            isValid = false;
+        } else {
+            session.removeAttribute("missingEmail");
+        }
+
+        if (password.isEmpty()) {
+            session.setAttribute("missingPassword", "Please fill in your password");
+            isValid = false;
+        } else {
+            session.removeAttribute("missingPassword");
+        }
+
+        if (!password.equals(confirmPass)) {
+            session.setAttribute("passwordsDontMatch", "Password and Confirm Password fields do not match");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String passwordConfirmation = request.getParameter("confirm_password");
-        boolean alreadyExists = false;
+        boolean isValid = validateRegistry(request);
 
-        // validate input
-        boolean inputHasErrors = username.isEmpty()
-            || email.isEmpty()
-            || password.isEmpty()
-            || (! password.equals(passwordConfirmation));
-
-        if (inputHasErrors) {
-            response.sendRedirect("/register");
-            return;
-        }
-
-        // create and save a new user
-        User user = new User(username, email, password);
-        try {
+        // validate input and create new user if valid
+        if (isValid) {
+            session.removeAttribute("dupeUsername");
+            session.removeAttribute("dupeEmail");
+            session.removeAttribute("missingUsername");
+            session.removeAttribute("missingEmail");
+            session.removeAttribute("missingPassword");
+            session.removeAttribute("passwordsDontMatch");
+            User user = new User(username, email, password);
             DaoFactory.getUsersDao().insert(user);
             response.sendRedirect("/login");
-        } catch (RuntimeException e) {
-            response.sendRedirect("/register?msg=1");
+        } else {
+            response.sendRedirect("/register?registry+error");
         }
     }
 }
