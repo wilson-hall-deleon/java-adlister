@@ -12,6 +12,7 @@
 
     <div class="container">
         <h1>Welcome, <c:out value="${sessionScope.user.username}"/>!</h1>
+        <hr>
         <c:forEach var="ad" items="${ads}">
             <div class="col-md-6">
                 <h2><a href="<c:url value='/ads/show?id=${ad.id}'/>"><c:out value="${ad.title}" /></a></h2>
