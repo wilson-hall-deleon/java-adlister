@@ -36,9 +36,12 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <script>
-        $('.delete-btn').on('click', function() {
+        $('.delete-btn').on('click', function(e) {
+            e.preventDefault();
             if (confirm('Are you sure you want to delete this ad?')) {
                 $(this).parent('form').submit();
+            } else {
+                return false;
             }
         });
     </script>
