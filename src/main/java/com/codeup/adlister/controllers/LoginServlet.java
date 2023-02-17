@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 @WebServlet(name = "controllers.LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -38,11 +37,17 @@ public class LoginServlet extends HttpServlet {
             session.removeAttribute("missingPassword");
         }
 
-        if (!Password.check(password, user.getPassword())) {
-            session.setAttribute("wrongPassword", "Your password is incorrect.");
+        if (user == null) {
+            session.setAttribute("wrongUsername", "Username not found.");
             isValid = false;
         } else {
-            session.removeAttribute("wrongPassword");
+            session.removeAttribute("wrongUsername");
+            if (!Password.check(password, user.getPassword())) {
+                session.setAttribute("wrongPassword", "Your password is incorrect.");
+                isValid = false;
+            } else {
+                session.removeAttribute("wrongPassword");
+            }
         }
         return isValid;
     }
@@ -61,12 +66,14 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         User user = DaoFactory.getUsersDao().findByUsername(username);
         boolean isValid = validateLogin(request);
+        session.setAttribute("username", username);
 
         if (isValid) {
             session.removeAttribute("wrongUsername");
             session.removeAttribute("missingUsername");
             session.removeAttribute("missingPassword");
             session.removeAttribute("wrongPassword");
+            session.removeAttribute("username");
             request.getSession().setAttribute("user", user);
             if (request.getSession().getAttribute("url")!= null){
                 response.sendRedirect((String) request.getSession().getAttribute("url"));
@@ -74,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("/profile");
             }
         } else {
-            response.sendRedirect("/login?login+error");
+            response.sendRedirect("/login?error");
         }
     }
 }

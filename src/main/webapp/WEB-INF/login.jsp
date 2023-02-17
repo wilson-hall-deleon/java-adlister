@@ -18,7 +18,11 @@
                     <%--missing username logic--%>
                     <c:when test="${missingUsername != null}">
                         <input id="username" name="username" class="form-control" type="text" style="border: 1px solid red">
-                        <span style="color: red" }>${missingUsername}</span>
+                        <span style="color: red">${missingUsername}</span>
+                    </c:when>
+                    <c:when test="${wrongUsername != null}">
+                        <input value="${username}" id="username" name="username" class="form-control" type="text" style="border: 1px solid red">
+                        <span style="color: red">${wrongUsername}</span>
                     </c:when>
                     <c:otherwise>
                         <input id="username" name="username" class="form-control" type="text">
@@ -31,12 +35,12 @@
                     <%--missing password logic--%>
                     <c:when test="${missingPassword != null}">
                         <input id="password" name="password" class="form-control" type="password" style="border: 1px solid red">
-                        <span style="color: red" }>${missingPassword}</span>
+                        <span style="color: red">${missingPassword}</span>
                     </c:when>
                     <%--wrong password logic--%>
                     <c:when test="${wrongPassword != null}">
                         <input id="password" name="password" class="form-control" type="password" style="border: 1px solid red">
-                        <span style="color: red" }>${wrongPassword}</span>
+                        <span style="color: red">${wrongPassword}</span>
                     </c:when>
                     <c:otherwise>
                         <input id="password" name="password" class="form-control" type="password">
