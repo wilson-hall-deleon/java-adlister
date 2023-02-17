@@ -26,7 +26,7 @@ public class MySQLAdsDao implements Ads {
     @Override
     public List<Ad> all() {
         try {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads ORDER BY id DESC");
             ResultSet rs = stmt.executeQuery();
             return createAdsFromResults(rs);
         } catch (SQLException e) {
