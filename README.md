@@ -1,9 +1,15 @@
-# Finish Up your Adlister
+## Adlister Project
 
-Follow the instructions and suggestions in [here](https://java.codeup.com/java-iii/finish-the-adlister)
+This is a simple web application that allows users to post and view ads. Users can create an account, log in, and create ads with a title and description. They can view their own ads as well as all ads posted by other users. They can also search for ads by keyword.
 
-## Final branch
+# Features
+- Users can sign up for an account and log in
+- Users can create ads with a title and description
+- Users can view all ads
+- Users can view individual ads and see the user who posted the ad
+- Users can delete their own ads
 
-Use this master branch as a base for your future features, this branch already has all the necessary code implemented up to the lesson on passwords including it's solution.
-
-You might have to change the default branch in your own fork so you can have the master branch as the the default and merge your contributions into it.
+# In Development
+- Users can update/edit their ads
+- Styling
+- Categories
