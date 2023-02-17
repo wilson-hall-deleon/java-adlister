@@ -18,16 +18,16 @@
             <c:choose>
                 <%--missing username logic--%>
                 <c:when test="${missingUsername != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${missingUsername}</span>
+                    <input value="${username}" id="username" name="username" class="username" type="text" style="border: 1px solid red">
+                    <span style="color: red">${missingUsername}</span>
                 </c:when>
                 <%--dupe username logic--%>
                 <c:when test="${dupeUsername != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${dupeUsername}</span>
+                    <input value="${username}" id="username" name="username" class="username" type="text" style="border: 1px solid red">
+                    <span style="color: red">${dupeUsername}</span>
                 </c:when>
                 <c:otherwise>
-                    <input id="username" name="username" class="username" type="text">
+                    <input value="${username}" id="username" name="username" class="username" type="text">
                 </c:otherwise>
             </c:choose>
         </div>
@@ -37,16 +37,16 @@
             <c:choose>
                 <%--missing email logic--%>
                 <c:when test="${missingEmail != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${missingEmail}</span>
+                    <input value="${email}" id="email" name="email" class="email" type="text" style="border: 1px solid red">
+                    <span style="color: red">${missingEmail}</span>
                 </c:when>
                 <%--dupe email logic--%>
                 <c:when test="${dupeEmail != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${dupeEmail}</span>
+                    <input value="${email}" id="email" name="email" class="email" type="text" style="border: 1px solid red">
+                    <span style="color: red">${dupeEmail}</span>
                 </c:when>
                 <c:otherwise>
-                    <input id="email" name="email" class="email" type="text">
+                    <input value="${email}" id="email" name="email" class="email" type="text">
                 </c:otherwise>
             </c:choose>
         </div>
@@ -55,8 +55,12 @@
             <label for="password">Password</label>
             <c:choose>
                 <c:when test="${missingPassword != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${missingPassword}</span>
+                    <input id="password" name="password" class="password" type="password" style="border: 1px solid red">
+                    <span style="color: red">${missingPassword}</span>
+                </c:when>
+                <c:when test="${passwordsDontMatch != null}">
+                    <input id="password" name="password" class="password" type="password" style="border: 1px solid red">
+                    <span style="color: red">${passwordsDontMatch}</span>
                 </c:when>
                 <c:otherwise>
                     <input id="password" name="password" class="password" type="password">
@@ -67,9 +71,13 @@
         <div class="form-group">
             <label for="confirm_password">Confirm Password</label>
             <c:choose>
+                <c:when test="${missingPassword != null}">
+                    <input id="confirm_password" name="confirm_password" class="password" type="password" style="border: 1px solid red">
+                    <span style="color: red">${missingPassword}</span>
+                </c:when>
                 <c:when test="${passwordsDontMatch != null}">
-                    <input id="username" name="username" class="username" type="text" style="border: 1px solid red">
-                    <span style="color: red" }>${passwordsDontMatch}</span>
+                    <input id="confirm_password" name="confirm_password" class="password" type="password" style="border: 1px solid red">
+                    <span style="color: red">${passwordsDontMatch}</span>
                 </c:when>
                 <c:otherwise>
                     <input id="confirm_password" name="confirm_password" class="password" type="password">

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Objects;
 
 @WebServlet(name = "controllers.RegisterServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
@@ -20,14 +21,16 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String confirmPass = request.getParameter("confirm_password");
 
-        if (DaoFactory.getUsersDao().findByUsername(username).getUsername().equalsIgnoreCase(username)) {
+        User existingUser = DaoFactory.getUsersDao().findByUsername(username);
+        if (existingUser != null && existingUser.getUsername().equalsIgnoreCase(username)) {
             session.setAttribute("dupeUsername", "A user already exists by this name.");
             isValid = false;
         } else {
             session.removeAttribute("dupeUsername");
         }
 
-        if (DaoFactory.getUsersDao().findByUsername(username).getEmail().equalsIgnoreCase(email)) {
+        User userWithEmail = DaoFactory.getUsersDao().findByEmail(email);
+        if (userWithEmail != null && Objects.requireNonNull(userWithEmail).getEmail().equalsIgnoreCase(email)) {
             session.setAttribute("dupeEmail", "A user already exists with this email.");
             isValid = false;
         } else {
@@ -72,6 +75,8 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         boolean isValid = validateRegistry(request);
+        session.setAttribute("username", username);
+        session.setAttribute("email", email);
 
         // validate input and create new user if valid
         if (isValid) {
@@ -81,11 +86,13 @@ public class RegisterServlet extends HttpServlet {
             session.removeAttribute("missingEmail");
             session.removeAttribute("missingPassword");
             session.removeAttribute("passwordsDontMatch");
+            session.removeAttribute("username");
+            session.removeAttribute("email");
             User user = new User(username, email, password);
             DaoFactory.getUsersDao().insert(user);
             response.sendRedirect("/login");
         } else {
-            response.sendRedirect("/register?registry+error");
+            response.sendRedirect("/register");
         }
     }
 }
