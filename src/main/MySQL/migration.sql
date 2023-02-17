@@ -24,3 +24,23 @@ CREATE TABLE ads
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS categories;
+CREATE TABLE categories (
+                            `id` int NOT NULL AUTO_INCREMENT,
+                            `category_name` varchar(45) NOT NULL,
+                            PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS ad_category;
+CREATE TABLE `ad_category` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `ad_id` int NOT NULL,
+                               `category_id` int NOT NULL,
+                               PRIMARY KEY (`id`),
+                               KEY `ad_id_idx` (`ad_id`),
+                               KEY `category_id_idx` (`category_id`),
+                               CONSTRAINT `ad_id` FOREIGN KEY (`ad_id`) REFERENCES `ads` (`id`),
+                               CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
+)
+
