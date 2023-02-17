@@ -3,9 +3,6 @@ package com.codeup.adlister.dao;
 import com.codeup.adlister.models.Ad;
 import com.mysql.cj.jdbc.Driver;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +26,22 @@ public class MySQLAdsDao implements Ads {
     @Override
     public List<Ad> all() {
         try {
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads");
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads ORDER BY id DESC");
             ResultSet rs = stmt.executeQuery();
             return createAdsFromResults(rs);
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving all ads.", e);
+        }
+    }
+
+    @Override
+    public List<Ad> sortByDescendingAdId() {
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM ads ORDER BY id DESC");
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving and sorting ads.", e);
         }
     }
 
